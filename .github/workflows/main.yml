@@ -1,0 +1,39 @@
+name: 'Netlify Deploy to Prod testing'
+
+on:
+  push:
+    branches: 
+      - main
+      - develop
+      - temp-salman
+
+jobs:
+  deploy:
+    name: 'deploy to netlify'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: creates output
+        run: sh .github/workflows/build.sh # some command from your repository that creates
+                            # output to "source-directory" ("output" in the example)
+      - name: Pushes to another repository
+        uses: adnanmayo/github-action-push-to-another-repository@main
+        env:         
+          API_TOKEN_GITHUB: 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 #${{ vars.API_TOKEN_GITHUB }}
+          #SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY_NETLIFY }}
+
+        with:
+          source-directory: './'
+          destination-github-username: 'adnanmayo'
+          destination-repository-name: 'autoupscale-frontend-nextjs'
+          user-email: adnan@codeupscale.com
+          create-target-branch-if-needed: true
+          target-branch: ${{ github.ref_name }}
+
+      
+
+          
+
+          
+
